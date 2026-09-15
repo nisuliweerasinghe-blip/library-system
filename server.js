@@ -17,6 +17,8 @@ const PORT = process.env.PORT || 5000;
 
 const bookRoutes = require('./routes/bookRoutes');
 app.use('/api/books', bookRoutes);
+const userRoutes = require('./routes/userRoutes');
+app.use('/api/users', userRoutes);
 const borrowRoutes = require('./routes/borrowRoutes');
 app.use('/api/borrow', borrowRoutes);
 
