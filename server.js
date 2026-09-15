@@ -15,7 +15,9 @@ app.get('/', (req, res) => {
 
 const PORT = process.env.PORT || 5000;
 
-const User = require('./models/User');
 const bookRoutes = require('./routes/bookRoutes');
 app.use('/api/books', bookRoutes);
+const borrowRoutes = require('./routes/borrowRoutes');
+app.use('/api/borrow', borrowRoutes);
+
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
