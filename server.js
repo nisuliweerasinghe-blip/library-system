@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
+   console.log('MONGO_URI is:', process.env.MONGO_URI);
 
 const app = express();
 app.use(express.json());
@@ -21,5 +22,7 @@ const userRoutes = require('./routes/userRoutes');
 app.use('/api/users', userRoutes);
 const borrowRoutes = require('./routes/borrowRoutes');
 app.use('/api/borrow', borrowRoutes);
+const reservationRoutes = require('./routes/reservationRoutes');
+app.use('/api/reservations', reservationRoutes);
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

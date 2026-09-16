@@ -15,6 +15,11 @@ const reservationSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
+    status: {
+        type: String,
+        enum: ['waiting', 'fulfilled', 'cancelled'],
+        default: 'waiting'
+    },
     queuePosition: {
         type: Number,
         required: true

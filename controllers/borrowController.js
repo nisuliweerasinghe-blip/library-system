@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Book = require('../models/Book');
 const BorrowRecord = require('../models/BorrowRecord');
+const Reservation = require('../models/Reservation');
 
 const LOAN_DAYS = 14;
 
@@ -72,17 +73,34 @@ exports.returnBook = async (req, res) => {
         record.fineAmount = fine;
         await record.save({ session });
 
+        const nextInQueue = await Reservation.findOne({
+            book: record.book,
+            status: 'waiting'
+        })
+        .sort({ queuePosition: 1 })
+        .session(session);
+
+        if (nextInQueue) {
+            nextInQueue.status = 'fulfilled';
+            await nextInQueue.save({ session });
+        } else {
         const book = await Book.findById(record.book).session(session);
         book.availableQty += 1;
         await book.save({ session });
+        }
 
         await session.commitTransaction();
         session.endSession();
 
-        res.status(200).json({ message: 'Book returned successfully', fine });
+        res.status(200).json({ 
+            message: 'Book returned successfully', 
+            fine,
+            handedToReservation: !!nextInQueue 
+        });
     } catch (err) {
         await session.abortTransaction();
         session.endSession();
         res.status(400).json({ error: err.message });
     }
-};
+};      
+
