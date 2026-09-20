@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const reservationController = require('../controllers/reservationController');
+const { authenticate, authorize } = require('../middleware/auth');
 
-router.post('/', reservationController.reserveBook);
-router.get('/:bookId', reservationController.getQueueForBook);
-router.get('/', reservationController.getAllReservationsForBook);
+router.post('/', authenticate, reservationController.reserveBook);
+router.get('/:bookId', authenticate, reservationController.getQueueForBook);
+router.get('/:bookId/all', authenticate, authorize('librarian', 'admin'), reservationController.getAllReservationsForBook);
 
 module.exports = router;
