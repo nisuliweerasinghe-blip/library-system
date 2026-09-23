@@ -1,3 +1,4 @@
+const QRCode = require('qrcode');
 const Book = require('../models/Book');
 
 exports.createBook = async (req, res) => {
@@ -12,9 +13,30 @@ exports.createBook = async (req, res) => {
             availableQty: totalQty
         });
 
+        const qrCode = await QRCode.toDataURL(book._id.toString());
+
+        book.qrCode = qrCode;
+        await book.save();
+
         res.status(201).json(book);
     }   catch (err) {
         res.status(400).json({ error: err.message });
+    }
+};
+
+exports.getBookById = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const book = await Book.findById(id);
+
+        if (!book) {
+            return res.status(404).json({ error: 'Book not found' });
+        }
+
+        res.status(200).json(book);
+    }   catch (err) {
+        res.status(400).json({ error: 'Invalid book ID format' });
     }
 };
 

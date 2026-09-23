@@ -23,6 +23,9 @@ const bookSchema = new mongoose.Schema({
         type: Number,
         required: true,
         default: 1
+    },
+    qrCode: {
+        type: String,
     }
 });
 
