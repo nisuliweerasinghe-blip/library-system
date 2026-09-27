@@ -24,5 +24,7 @@ const borrowRoutes = require('./routes/borrowRoutes');
 app.use('/api/borrow', borrowRoutes);
 const reservationRoutes = require('./routes/reservationRoutes');
 app.use('/api/reservations', reservationRoutes);
+const paymentRoutes = require('./routes/paymentRoutes');
+app.use('/api/payments', paymentRoutes);
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

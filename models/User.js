@@ -18,6 +18,10 @@ const userSchema = new mongoose.Schema({
         type: String,
         enum: ['student', 'librarian', 'admin'],
         default: 'student'
+    },
+    outstandingFine: {
+        type: Number,
+        default: 0
     }
 });
 
